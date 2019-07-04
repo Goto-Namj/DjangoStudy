@@ -1,0 +1,47 @@
+장고 프레임워크 구성
+    djangoproject
+    ├───manage.py
+    ├───mysite
+    |       settings.py
+                    ALLOWED_HOSTS : 애플리케이션을 배포할 때 쓸 호스트 이름을 추가, 비어있다면, 127뭐시기 로컬뭐시기 [::1]가 기본설정되어있음
+                    TIME_ZONE : 'Asia/Seoul'로 변경을 통해 웹사이트의 시간대를 설정할 수 있다.
+                    STATIC_ROOT = os.path.join(BASE_DIR, 'static')  :  정적파일 경로를 추가 (STATIC_URL 아래에 작성이 국룰)
+                    INSTALLED_APPS : 어플리케이션 생성 했으면 연결시키기 위해 , 뒤에 어플리케이션 이름을 추가
+    |       urls.py
+    |       wsgi.py
+    |       __init__.py
+    └── blog
+        ├── migrations
+        |       __init__.py
+        ├── __init__.py
+        ├── admin.py
+        ├── models.py
+                    Model 객체 생성하는 곳
+                    models는 django.db로부터 import해야함
+                    class Post(models.Model):   모델을 정의
+                    a = models.CharField(max_length=1)    글자 수가 제한된 텍스트를 정의
+                    b = models.TextField()    글자 수에 제한이 없는 텍스트를 정의
+                    c = models.DateTimeField(default=timezone.now)  날짜와 시간 정의 timezone은 django.utils로 부터 import해야함
+                                            (blank=True, null=True) 날짜와 시간 비워둬도 된다는거같음
+                    d = models.ForeignKey('auth.User', on_delete=models.CASCADE)    다른 모델에 대한 링크
+        ├── tests.py
+        └── views.py
+
+
+장고 프레임워크 생성
+    pytohn (장고어드민풀주소)\django-admin.py startproject mysite .
+
+데이터 베이스 생성
+    python manage.py migrate
+
+어플리케이션 생성
+    python manage.py startapp (어플리케이션 디렉터리 이름)(ex blog)
+
+만든 모델의 데이터를 데이터베이스에 저장
+    python manage.py makemigrations blog
+        마이그레이션 파일 생성
+    python manage.py migrate blog
+        실제로 데이터 베이스에 저장
+
+서버 시작
+    python manage.py runserver
